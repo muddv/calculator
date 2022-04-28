@@ -1,0 +1,71 @@
+body {
+    background-color: aqua;
+}
+
+.header {
+    height: 100px;
+}
+
+.display, .calculator {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.display {
+    width: 300px;
+    margin: auto;
+    height: 150px;
+    background-color: rgb(33, 122, 33);
+    font-size: 90px;
+    text-overflow: ellipsis; 
+    white-space: wrap;
+    overflow: hidden;
+}
+
+#input {
+    display: flex;
+    flex-direction: column;
+    /*margin-right: 250px;*/
+}
+
+button {
+    font-size: xx-large;
+    width:75px;
+    height: 75px;
+    margin: -3px
+}
+p {
+    margin: 0px;
+}
+#clear {
+    margin: 2px;
+    width: 200px;
+}
+
+.frame {
+    margin: auto;
+    background-color: black;
+    width: 360px;
+}
+ image {
+     margin-top: 10px;
+ }
+
+.odin-instruments {
+    display: flex;
+    background-color: black;
+    flex-direction: row;
+    width: 200px;
+    height: 75px;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    margin-top: 275px;
+    outline: 5px solid gold;
+}
+
+.odin-instruments p{
+    color: white;
+}
