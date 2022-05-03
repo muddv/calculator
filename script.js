@@ -1,4 +1,4 @@
-let displayText = ''
+let displayText = '';
 
 function takeInputs() {
     const nine = document.querySelector('#nine');
@@ -64,6 +64,7 @@ function takeInputs() {
     });
     const equals = document.querySelector('#equals');
     equals.addEventListener('click', () => {
+        displayPrevious(displayText);
         displayInput('=');
         evaluateInput(displayText);
     });
@@ -78,11 +79,16 @@ function displayInput(input) {
     display.textContent = displayText;
 } 
 
+function displayPrevious(displayText) {
+    const previous = document.querySelector('#previous');
+    previous.textContent = displayText;
+}
+
 function clearButton() {
     const clear = document.querySelector('#clear');
     clear.addEventListener('click', () => {
         displayText = ''
-        displayInput(displayText)
+        displayInput(displayText);
         return displayText;
     });
 }
@@ -91,13 +97,19 @@ function evaluateInput(displayText) {
     console.log(displayText)
     // this is a RegExp and I don't really know how this works
     let variables = displayText.split(/[+, *, /, -, =]+/);
-    console.log(variables)
-    let operator = displayText.slice(variables[0].length, variables[0].length + 1)
-    console.log(operator)
-    if (operator === "+") sum(variables); 
-    if (operator === "-") subtract(variables);
-    if (operator === "*") multiply(variables);
-    if (operator === "/") divide(variables);  
+    console.table(variables)
+    let operator = [];
+    for (i = 0; i < displayText.length; i++) {
+        if (displayText[i] == "+" || displayText[i] == "*" || displayText[i] == "/" || displayText[i] == "-") {
+            operator[i] = displayText[i]
+        }
+    }
+    console.table(operator)
+    // ADD LOGIC FOR OPERATOR PRECEDENCE
+    if (operator[0] === "+") sum(variables); 
+    if (operator[0] === "-") subtract(variables);
+    if (operator[0] === "*") multiply(variables);
+    if (operator[0] === "/") divide(variables);  
 }
 
 function sum(variables) {

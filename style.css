@@ -18,7 +18,7 @@ body {
     margin: auto;
     height: 150px;
     background-color: rgb(33, 122, 33);
-    font-size: 90px;
+    font-size: xx-large;
     text-overflow: ellipsis; 
     white-space: wrap;
     overflow: hidden;
@@ -28,6 +28,12 @@ body {
     display: flex;
     flex-direction: column;
     /*margin-right: 250px;*/
+}
+
+#previous {
+    margin-left: auto;
+    font-size: medium;
+    color: rgb(41, 39, 39);
 }
 
 button {
