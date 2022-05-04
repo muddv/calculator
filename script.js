@@ -66,7 +66,7 @@ function takeInputs() {
     equals.addEventListener('click', () => {
         displayPrevious(displayText);
         displayInput('=');
-        evaluateInput(displayText);
+        parseInput(displayText);
     });
 }
 
@@ -89,50 +89,98 @@ function clearButton() {
     clear.addEventListener('click', () => {
         displayText = ''
         displayInput(displayText);
+        displayPrevious(displayText);
         return displayText;
     });
 }
 
-function evaluateInput(displayText) {
+function parseInput(displayText) {
     console.log(displayText)
     // this is a RegExp and I don't really know how this works
     let variables = displayText.split(/[+, *, /, -, =]+/);
     console.table(variables)
-    let operator = [];
+    let operators = [];
+    let j = 0;
     for (i = 0; i < displayText.length; i++) {
         if (displayText[i] == "+" || displayText[i] == "*" || displayText[i] == "/" || displayText[i] == "-") {
-            operator[i] = displayText[i]
+            operators[j] = displayText[i];
+            j++;
         }
     }
-    console.table(operator)
+    console.table(operators)
+    console.log(`operator[0]: ${operators[0]}`)
+    evaluate(variables, operators)
     // ADD LOGIC FOR OPERATOR PRECEDENCE
-    if (operator[0] === "+") sum(variables); 
-    if (operator[0] === "-") subtract(variables);
-    if (operator[0] === "*") multiply(variables);
-    if (operator[0] === "/") divide(variables);  
+    //if (operator[0] === "+") sum(variables); 
+    //if (operator[0] === "-") subtract(variables);
+    //if (operator[0] === "*") multiply(variables);
+    //if (operator[0] === "/") divide(variables);  
 }
 
-function sum(variables) {
-    let sum = 0;
-	for (let i = 0; i < variables.length; i++) {
-    sum += Number(variables[i]);
-  }
-  displayInput(sum);
+function evaluate(variables, operators) {
+    if (operators.length === 1) {
+        if (operators[0] === "+") sum(variables[0], variables[1]); 
+        if (operators[0] === "-") subtract(variables[0], variables[1]);
+        if (operators[0] === "*") multiply(variables[0], variables[1]);
+        if (operators[0] === "/") divide(variables[0], variables[1]); 
+    }
+    else {
+        j = 0;
+        for (i = 0; i < operators.length; i++) {
+            if (operators[i] === "*" || operators[i] === "/") {
+                if (variables[i] != "done" && variables[i + 1] != "done") {
+                    operators[i] === "*" ? memory[j] = multiply(variables[i], variables[i + 1]) : memory[j] = divide(variables[i], variables[i + 1]);
+                    j++;
+                    variables[i] = "done"
+                    variables[i + 1] = "done"
+                }
+                else if (variables[i] === "done" && variables[i + 1] != "done") {
+
+                }
+                else if (variables[i] != "done" && variables[i + 1] === "done") {
+
+                }
+                else if (variables[i] === "done" && variables[i + 1] === "done") {
+
+                }
+            }
+            console.table(`memory: ${memory}`)
+            console.table(`variables: ${variables}`)
+
+        }
+    }
 }
 
-function subtract(variables) {
-    result = variables[0] - variables[1];
+function remember(index, variableIndex, value) {
+    const memory = {};
+    memory.index = index;
+    memory.variableIndex = variableIndex;
+    memory.value = value;
+    return memory;
+}
+
+function sum(a, b) {
+    result = a + b;
     displayInput(result);
+    return result;
 }
 
-function multiply(variables) {
-    result = variables[0] * variables[1]
+function subtract(a, b) {
+    result = a - b;
     displayInput(result);
+    return result;
 }
 
-function divide(variables) {
-    result = variables[0] / variables[1]
+function multiply(a, b) {
+    result = a * b
+    displayInput(result);
+    return result;
+}
+
+function divide(a, b) {
+    result = a / b
     displayInput(result)
+    return result;
 }
 
 window.onload = () => {
