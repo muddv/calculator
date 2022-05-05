@@ -160,8 +160,8 @@ function evaluate(variables, operators) {
                     operators[k] = temp;
                     console.table(`post calc ops: ${operators}`);
                 }
-                variables.pop()
-                operators.pop()
+                //variables.pop()
+                //operators.pop()
                 i--;
             }
         }
