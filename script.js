@@ -98,7 +98,7 @@ function parseInput(displayText) {
     console.log(displayText)
     // this is a RegExp and I don't really know how this works
     //let variables = displayText.split(/[+, *, /, -, =]+/);
-    let variables = displayText.split(/[-, +, -, *, =]+/);
+    let variables = displayText.split(/[-, +, -, *, /, =]+/);
     //SOMEHOW EMPTY UNDEFINED LAST ELEMENT IS BEING ADDED TO THIS ARRAY, THIS NEED TO BE SOLVED BETTER
     variables.pop();
     console.table(variables)
@@ -142,8 +142,8 @@ function evaluate(variables, operators) {
                      operators[k] = temp;
                      console.table(`post calc ops: ${operators}`);
                  }
-                 variables.pop()
-                 operators.pop()
+                 //variables.pop()
+                 //operators.pop()
                  i--;
             }
         }
