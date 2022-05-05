@@ -97,7 +97,10 @@ function clearButton() {
 function parseInput(displayText) {
     console.log(displayText)
     // this is a RegExp and I don't really know how this works
-    let variables = displayText.split(/[+, *, /, -, =]+/);
+    //let variables = displayText.split(/[+, *, /, -, =]+/);
+    let variables = displayText.split(/[-, +, -, *, =]+/);
+    //SOMEHOW EMPTY UNDEFINED LAST ELEMENT IS BEING ADDED TO THIS ARRAY, THIS NEED TO BE SOLVED BETTER
+    variables.pop();
     console.table(variables)
     let operators = [];
     let j = 0;
@@ -119,67 +122,76 @@ function parseInput(displayText) {
 
 function evaluate(variables, operators) {
     if (operators.length === 1) {
-        if (operators[0] === "+") sum(variables[0], variables[1]); 
-        if (operators[0] === "-") subtract(variables[0], variables[1]);
-        if (operators[0] === "*") multiply(variables[0], variables[1]);
-        if (operators[0] === "/") divide(variables[0], variables[1]); 
+        if (operators[0] === "+") variables[0] = sum(variables[0], variables[1]); 
+        if (operators[0] === "-") variables[0] = subtract(variables[0], variables[1]);
+        if (operators[0] === "*") variables[0] = multiply(variables[0], variables[1]);
+        if (operators[0] === "/") variables[0] = divide(variables[0], variables[1]); 
     }
     else {
-        j = 0;
-        for (i = 0; i < operators.length; i++) {
+        for (let i = 0; i <= operators.length; i++) {
             if (operators[i] === "*" || operators[i] === "/") {
-                if (variables[i] != "done" && variables[i + 1] != "done") {
-                    operators[i] === "*" ? memory[j] = multiply(variables[i], variables[i + 1]) : memory[j] = divide(variables[i], variables[i + 1]);
-                    j++;
-                    variables[i] = "done"
-                    variables[i + 1] = "done"
-                }
-                else if (variables[i] === "done" && variables[i + 1] != "done") {
-
-                }
-                else if (variables[i] != "done" && variables[i + 1] === "done") {
-
-                }
-                else if (variables[i] === "done" && variables[i + 1] === "done") {
-
-                }
+                 operators[i] === "*" ? variables[i] = multiply(variables[i], variables[i + 1]) : variables[i] = divide(variables[i], variables[i + 1]);
+                // inverting binary tree woah
+                 for (let j = i + 1; j < variables.length; j++) {
+                     let temp = variables[j + 1];
+                     variables[j] = temp;
+                     console.table(`post calc vars: ${variables}`)
+                 }
+                 for (let k = i; k < operators.length; k++) {
+                     let temp = operators[k + 1]
+                     operators[k] = temp;
+                     console.table(`post calc ops: ${operators}`);
+                 }
+                 variables.pop()
+                 operators.pop()
+                 i--;
             }
-            console.table(`memory: ${memory}`)
-            console.table(`variables: ${variables}`)
-
         }
+        for (let i = 0; i <= operators.length; i++) {
+            if (operators[i] === "+" || operators[i] === "-") {
+                operators[i] === "+" ? variables[i] = sum(variables[i], variables[i + 1]) : variables[i] = subtract(variables[i], variables[i + 1]);
+                for (let j = i + 1; j < variables.length; j++) {
+                    let temp = variables[j + 1];
+                    variables[j] = temp;
+                    console.table(`post calc vars: ${variables}`)
+                }
+                for (let k = i; k < operators.length; k++) {
+                    let temp = operators[k + 1]
+                    operators[k] = temp;
+                    console.table(`post calc ops: ${operators}`);
+                }
+                variables.pop()
+                operators.pop()
+                i--;
+            }
+        }
+        console.log(`operators.length: ${operators.length}`)
     }
+            //  this may be problematic but now thi is the only way result is displayed
+            displayInput(variables[0])
 }
 
-function remember(index, variableIndex, value) {
-    const memory = {};
-    memory.index = index;
-    memory.variableIndex = variableIndex;
-    memory.value = value;
-    return memory;
-}
+
 
 function sum(a, b) {
-    result = a + b;
-    displayInput(result);
+    let result = Number(a) + Number(b);
     return result;
 }
 
 function subtract(a, b) {
-    result = a - b;
-    displayInput(result);
+    let result = Number(a) - Number(b);
     return result;
 }
 
 function multiply(a, b) {
-    result = a * b
-    displayInput(result);
+    let result = a * b
+    console.log(`result: ${result}`)
+
     return result;
 }
 
 function divide(a, b) {
-    result = a / b
-    displayInput(result)
+    let result = a / b
     return result;
 }
 
